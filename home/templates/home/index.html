@@ -1,0 +1,83 @@
+{% extends "home/home.html" %}
+
+{% block head %} <b> NITTEC Corporation Center </b> {% endblock %}
+{% block content %}
+
+<style>
+    #openEvents, #openConstruction, #openEquipment{
+        text-align:center;
+    }
+    table {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 90%;
+        margin-left:5%;
+    }
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+    #continue, #info{
+        text-align:center;
+        padding-top:2%;
+    }
+</style>
+<div class="text-center">
+    <div>
+        <div id="openEvents">
+            <p style="font-size:1.5em"> <b> Open Event Logs </b></p>
+            <table>
+                <tr>
+                    <th> Log ID</th>
+                    <th> Date</th>
+                    <th> Time</th>
+                    <th> Route/Street</th>
+                    <th> General Events</th>
+                    <th> Event Description</th>
+                </tr>
+            </table>
+        </div>
+        <div id="openConstruction">
+            <p style="font-size:1.5em"> <b> Open Construction Logs </b></p>
+            <table>
+                <tr>
+                    <th> Log ID</th>
+                    <th> Date</th>
+                    <th> Time</th>
+                    <th> Route/Street</th>
+                    <th> General Events</th>
+                    <th> Event Description</th>
+                </tr>
+            </table>
+        </div>
+        <div id="openEquipment">
+            <p style="font-size:1.5em"> <b> Open Equipment Logs </b></p>
+            <table>
+                <tr>
+                    <th> Log ID</th>
+                    <th> Date</th>
+                    <th> Time</th>
+                    <th> Equipment/System</th>
+                    <th> Equipment Name</th>
+                    <th> Type Of Problem</th>
+                    <th> Owning Agency</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="continue">
+        <button type="submit" value="Continue" class="btn btn-default"> Refresh </button>
+    </div>
+    <div id="info">
+        <lable for="helpTruck"> Help Truck</lable>
+        <input type="text" name="help"/>
+        <lable for="logid"> Log ID#</lable>
+        <input type="text" name="log"/>
+    </div>
+</div>
+
+{% endblock %}

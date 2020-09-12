@@ -1,0 +1,633 @@
+{% extends "home/home.html" %}
+
+{% block head %} Construction Projects {% endblock %}
+{% block content %}
+    <style>
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            right: 0;
+            background-color: rgb(202, 193, 108);
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 10px;
+        }
+        
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            margin-right: 25px;
+        }
+        
+        @media screen and (max-height: 450px) {
+            .sidenav {padding-top: 15px;}
+        }
+    </style>
+    <form method="POST">
+        <div style="clear: both;">
+            <div style="text-align: center; float: left;" class="border w-25 p-1">
+                <label><mark><b>Report ID: </b></mark></label>
+                <input name="id" type="text" name="id">
+                <br>
+    
+                <input name="fast_left" type="button" value="&#x25C0;&#x25C0;">
+                <input name="left" type="button" value="&#x25C0;">
+                <input name="right" type="button" value="&#x25B6;">
+                <input name="fast_right" type="button" value="&#x25B6;&#x25B6;">
+                <br>
+    
+                <input name="add_report" type="button" value="Add Report" style="width: 130px;">
+                <input name="find_report" type="button" value="Find Report" style="width: 130px;">
+                <br>
+    
+                <input name="save_report" type="button" value="Save Report" style="width: 130px;">
+                <input name="refresh" type="button" value="Refresh" style="width: 130px;">
+                <br>
+    
+                <input name="update_report" type="button" value="Update Report" style="width: 130px;">
+                <input name="print_response" type="button" value="Print Report" style="width: 130px;">
+                <br>
+    
+                <input name="delete_report" type="button" value="Delete Report" style="width: 130px;">
+                <input name="admin_update" type="button" value="Admin Update" style="width: 130px;">
+                <br>
+            </div>
+            <div style="float: left; margin-left: 12px; margin-top: 40px;" class="border">
+                <label>Date:  </label>
+                <input name="date" type="date">
+                <label>Time:  </label>
+                <input name="time" type="time">
+                <br>
+                <label><mark><b>Status: </b></mark></label>
+                <input name="status" type="checkbox">
+                <input name="number_lanes" type="number" style="width: 50px;">
+                <label style="margin-left: 5px;"># of lanes</label>
+                <br>
+                <input name="full_road_closure" type="checkbox" style="margin-left: 85px;">
+                <label style="margin-left: 5px";>Full Road Closure</label>
+            </div>
+        </div>
+        <div style="margin-left: 40px; float: left;">
+            <label>Operator</label>
+            <br>
+            <select name="operator" style="width: 150px;">
+                <option>this</option>
+                <option>is</option>
+                <option>a</option>
+                <option>test</option>
+                <option>list</option>
+            </select>
+            <br>
+            <label>General Event Descroption</label>
+            <br>
+            <select name="general_event_description" style="width: 150px;">
+                <option>this</option>
+                <option>is</option>
+                <option>a</option>
+                <option>test</option>
+                <option>list</option>
+            </select>
+            <br>
+            <br> 
+            <label>EIC/Emergency Contacts</label>
+            <br>
+            <textarea name="emergency_contacts" rows="4" cols="50"></textarea>
+            <div>
+                <br>
+                <br>
+                <label><mark><b>Operators Response</b></mark></label>
+                <table class="border">
+                    <tr>
+                        <td>
+                            <input name="operators_response_info" type="radio">
+                            <label>Emergency</label>
+                            <br>
+                            <label>Emergency Action</label>
+                            <br>
+                            <select name="operators_response_action" style="width: 150px;">
+                                <option>this</option>
+                                <option>is</option>
+                                <option>a</option>
+                                <option>test</option>
+                                <option>list</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input name="operators_response_info" type="radio">
+                            <label>Non-Emergency</label>
+                            <br>
+                            <label>Non-Emergency Action</label>
+                            <br>
+                            <select name="operators_response_action" style="width: 150px;">
+                                <option>this</option>
+                                <option>is</option>
+                                <option>a</option>
+                                <option>test</option>
+                                <option>list</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input name="operators_response_info" type="radio">
+                            <label>In Construction Zone</label>
+                            <br>
+                            <label>Construction Action</label>
+                            <br>
+                            <select name="operators_response_action" style="width: 150px;">
+                                <option>this</option>
+                                <option>is</option>
+                                <option>a</option>
+                                <option>test</option>
+                                <option>list</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <br>
+        </div>
+        <div style="clear: both; position: absolute; margin: 280px auto auto 30px;">
+            <div>
+                <label>Event Description</label>
+                <br>
+                <textarea name="event_description" rows="4" cols="50"></textarea>
+                <br>
+    
+                <label>Operators Response</label>
+                <br>
+                <textarea name="operators_response" rows="4" cols="50"></textarea>
+                <br>
+                <input name="response_information" class="btn btn-outline-primary" value="Add Response Information" type="submit">
+                <input name="print_response" class="btn btn-outline-dark" value="Print Response">
+                <br>
+            </div>
+        </div>
+        <br>
+        <div style="float: left; margin: 10px auto auto 450px;">
+            <input name="activate_help" type="button" value="Activate Help" data-toggle="button" onclick="openNav()" class="btn btn-outline-primary btn-sm" autocomplete="off" style="width: 130px;">
+            <input name="email_erie_county" type="button" value="Email Erie County" class="btn btn-outline-primary btn-sm" style="width: 130px;">
+            <br>
+            <br>
+            <input name="exit" type="button" value="Exit" class="btn btn-outline-danger btn-sm" style="width: 130px;">
+            <input name="email_nysdot" type="button" value="Email NYSDOT" class="btn btn-outline-primary btn-sm" style="width: 130px;">
+        </div>
+        <div style="clear: both; float: left; margin: 10px auto auto 450px;">
+            <div style="float: left;">
+                <br>
+                <label><mark><b>Cross Roads</b></mark></label>
+                <table class="border">
+                    <tr>
+                        <td>
+                            <label>ID:  </label>
+                        </td>
+                        <td>
+                            <input name="cross_roads_id" type="number">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <input name="activated_dms" type="checkbox">
+                            <label>DMS</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Activated:</label>
+                        </td>
+                        <td>
+                            <input name="activated_fax_email" type="checkbox">
+                            <label>Fax/Email</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <input name="activated_web" type="checkbox">
+                            <label>Web</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <input name="deactivated_dms" type="checkbox">
+                            <label>DMS</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Deactivated:</label>
+                        </td>
+                        <td>
+                            <input name="deactivated_fax_email" type="checkbox">
+                            <label>Fax/Email</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <input name="deactivated_web" type="checkbox">
+                            <label>Web</label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="float: left;">
+                <br>
+                <br>
+                <br>
+                <table style="margin: auto auto auto 5px; text-align: right; width: 285px;" class="border">
+                    <tr>
+                        <td>
+                            <input name="dms_activation_time" type="checkbox">
+                            <label>DMS</label>
+                        </td>
+                        <td>
+                            <label>Activation Time</label>
+                            <input name="dms_activation_time" type="time">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <label>Deactivation Time</label>
+                            <input name="dms_deactivation_time" type="time">
+                        </td>
+                    </tr>
+                </table>
+                <table style="margin: auto auto auto 5px; text-align: right; width: 285px;" class="border">
+                    <tr>
+                        <td>
+                            <input name="pvms_activation_time" type="checkbox">
+                            <label>PVMS</label>
+                        </td>
+                        <td>
+                            <label>Activation Time</label>
+                            <input name="pvms_activation_time" type="time">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <label>Deactivation Time</label>
+                            <input name="pvms_deactivation_time" type="time">
+                        </td>
+                    </tr>
+                </table>
+                <table style="margin: auto auto auto 5px; text-align: right; width: 285px;" class="border">
+                    <tr>
+                        <td>
+                            <input name="har_activation_time" type="checkbox">
+                            <label>HAR</label>
+                        </td>
+                        <td>
+                            <label>Activation Time</label>
+                            <input name="har_activation_time" type="time">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <label>Deactivation Time</label>
+                            <input name="har_deactivation_time" type="time">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div style="float: left; clear: both; margin: auto auto auto 450px;">
+            <table>
+                <tr>
+                    <td>
+                        <label>PVMS List</label>
+                        <br>
+                        <select name="pvms_list" size="8" style="width: 150px;">
+                            <option>this</option>
+                            <option>is</option>
+                            <option>a</option>
+                            <option>test</option>
+                            <option>list</option>
+                        </select>
+                    </td>
+                    <br>
+                    <td>
+                        <label>PVMS Active List</label>
+                        <br>
+                        <select name="pvms_active_list" size="8" style="width: 150px;">
+                            <option>this</option>
+                            <option>is</option>
+                            <option>a</option>
+                            <option>test</option>
+                            <option>list</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="clear: both; position: absolute; margin: 600px auto auto 30px;">
+            <table>
+                <tr>
+                    <td style="width: 170px;">
+                        <label>Detection Method</label>
+                        <br>
+                        <select name="detection_method" style="width: 150px;">
+                            <option>this</option>
+                            <option>is</option>
+                            <option>a</option>
+                            <option>test</option>
+                            <option>list</option>
+                        </select>
+                    </td>
+                    <td style="width: 170px;">
+                        <label>Route/Street</label>
+                        <br>
+                        <select name="route_street" style="width: 150px;">
+                            <option>this</option>
+                            <option>is</option>
+                            <option>a</option>
+                            <option>test</option>
+                            <option>list</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 170px;">
+                        <label>Caller Name</label>
+                        <br>
+                        <select name="caller_name" style="width: 150px;">
+                            <option>this</option>
+                            <option>is</option>
+                            <option>a</option>
+                            <option>test</option>
+                            <option>list</option>
+                        </select>
+                    </td>
+                    <td style="width: 170px;">
+                        <label>Direction</label>
+                        <br>
+                        <select name="direction" style="width: 150px;">
+                            <option>this</option>
+                            <option>is</option>
+                            <option>a</option>
+                            <option>test</option>
+                            <option>list</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 170px;">
+                        <label>Caller Phone #</label>
+                        <br>
+                        <select name="caller_phone" style="width: 150px;">
+                            <option>this</option>
+                            <option>is</option>
+                            <option>a</option>
+                            <option>test</option>
+                            <option>list</option>
+                        </select>
+                    </td>
+                    <td style="width: 170px;">
+                        <label>Cross Street</label>
+                        <br>
+                        <select name="cross_street" style="width: 150px;">
+                            <option>this</option>
+                            <option>is</option>
+                            <option>a</option>
+                            <option>test</option>
+                            <option>list</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 170px;">
+                        <label>Caller Organization</label>
+                        <br>
+                        <select name="caller_organization" style="width: 150px;">
+                            <option>this</option>
+                            <option>is</option>
+                            <option>a</option>
+                            <option>test</option>
+                            <option>list</option>
+                        </select>
+                    </td>
+                    <td style="width: 170px;">
+                        <label>Municipality</label>
+                        <br>
+                        <select name="municipality" style="width: 150px;">
+                            <option>this</option>
+                            <option>is</option>
+                            <option>a</option>
+                            <option>test</option>
+                            <option>list</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Owning Agency</label>
+                        <br>
+                        <select name="owning_agency" style="width: 150px;">
+                            <option>this</option>
+                            <option>is</option>
+                            <option>a</option>
+                            <option>test</option>
+                            <option>list</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>
+                        <label>DMS List</label>
+                        <br>
+                        <select name="dms_list" size="8" style="width: 150px;">
+                            <option>this</option>
+                            <option>is</option>
+                            <option>a</option>
+                            <option>test</option>
+                            <option>list</option>
+                        </select>
+                    </td>
+                    <br>
+                    <td>
+                        <label>DMS Active List</label>
+                        <br>
+                        <select name="dms_active_list" size="8" style="width: 150px;">
+                            <option>this</option>
+                            <option>is</option>
+                            <option>a</option>
+                            <option>test</option>
+                            <option>list</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!-- Activity help log -->
+        <div id="help_log" class="sidenav">
+            <div style="margin: auto auto auto 5px">
+                <label><mark><b>Help Activity Log</b></mark></label>
+                <br>
+                <table>
+                    <tr>
+                        <td>
+                            <label>Help Team ID</label>
+                            <br>
+                            <input name="help_team_id" type="number" style="width: 150px;">
+                        </td>
+                        <td>
+                            <label>Referring Log</label>
+                            <br>
+                            <input name="referring_log" type="number" style="width: 150px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Date</label>
+                            <br>
+                            <input name="help_date" type="date" style="width: 150px;">
+                        </td>
+                        <td>
+                            <label>Referring Route</label>
+                            <br>
+                            <input name="referring_route" type="text" style="width: 150px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Time</label>
+                            <br>
+                            <input name="help_time" type="time" style="width: 150px;">
+                        </td>
+                    </tr>
+                </table>
+                <label>Operator</label>
+                <br>
+                <select name="help_operator" style="width: 150px;">
+                    <option>this</option>
+                    <option>is</option>
+                    <option>a</option>
+                    <option>test</option>
+                    <option>list</option>
+                </select>
+                <br>
+                <label>How Notified</label>
+                <br>
+                <select name="help_how_notified" style="width: 150px;">
+                    <option>this</option>
+                    <option>is</option>
+                    <option>a</option>
+                    <option>test</option>
+                    <option>list</option>
+                </select>
+                <br>
+                <label>Assist Type</label>
+                <br>
+                <select name="help_assist_type" style="width: 150px;">
+                    <option>this</option>
+                    <option>is</option>
+                    <option>a</option>
+                    <option>test</option>
+                    <option>list</option>
+                </select>
+                <br>
+                <label>Action Taken</label>
+                <br>
+                <select name="help_action_taken" style="width: 150px;">
+                    <option>this</option>
+                    <option>is</option>
+                    <option>a</option>
+                    <option>test</option>
+                    <option>list</option>
+                </select>
+                <br>
+                <div style="float: left;" class="border">
+                    <label>Referring Log Type</label>
+                    <br>
+                    <input name="referring_log_type" type="radio">
+                    <label>Incident</label>
+                    <br>
+                    <input name="referring_log_type" type="radio">
+                    <label>Construction</label>
+                    <br>
+                    <input name="referring_log_type" type="radio">
+                    <label>Debris</label>
+                </div>
+                <div style="float: left;">
+                    <input name="delete_help_record" type="button" class="btn btn-outline-danger" value="Delete Help Record" style="width: 120px; white-space: normal; margin: auto auto auto 40px">
+                </div>
+                <div style="clear: both;">
+                    <table class="border">
+                        <tr>
+                            <label>Incident Start Time</label>
+                            <br>
+                            <input name="incident_start_time" type="time">
+                            <br>
+                        </tr>
+                        <tr>
+                            <label>Dispatch Time</label>
+                            <br>
+                            <input name="dispatch_time" type="time">
+                            <br>
+                        </tr>
+                    </table>
+                    <table class="border">
+                        <tr>
+                            <label>Arrival Time</label>
+                            <br>
+                            <input name="arrival_time" type="time">
+                            <br>
+                        </tr>
+                        <tr>
+                            <label>Clear Lane Time</label>
+                            <br>
+                            <input name="clear_lane_time" type="time">
+                            <br>
+                        </tr>
+                    </table>
+                    <table class="border">
+                        <tr>
+                            <label>Scene Departure Time</label>
+                            <br>
+                            <input name="scene_departure_time" type="time">
+                            <br>
+                        </tr>
+                        <tr>
+                            <label>Number of Vehicals Moved</label>
+                            <br>
+                            <input name="num_vehicals_moved" type="number">
+                            <br>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script>
+            function openNav() {
+                console.log("ello")
+                if (document.getElementById("help_log").style.width === "0px") {
+                    document.getElementById("help_log").style.width = "350px"
+                    //hl.style.width = "400px";
+                } else {
+                    document.getElementById("help_log").style.width = "0px"
+                }
+            }
+        
+        </script>
+    </form>
+{% endblock %}

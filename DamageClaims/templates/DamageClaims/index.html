@@ -1,0 +1,204 @@
+{% extends "home/home.html" %}
+
+{% block head %} Damage Claims/Information {% endblock %}
+{% block content %}
+<style>
+
+    #left{
+    height:98%;
+    width:20%;
+    padding-top:1%;
+    text-align:center;
+    float:left;
+    }
+    #right{
+    height:98%;
+    width:80%;
+    float:left;
+    }
+    #rightTop{
+    width:100%;
+    height:12%;
+    padding-top:1%;
+    padding-left:25%;
+    float:down;
+    }
+    #rightCenter{
+    width:100%;
+    height:40%;
+    float:down;
+    border-style:solid;
+    }
+    #rightBottom{
+    width:100%;
+    height:30%;
+    float:down;
+    border-style:solid;
+    }
+    #rightCenterLeft{
+    width:60%;
+    height:80%;
+    float:left;
+    padding-top:2%;
+    }
+    #rightCenterRight{
+    width:40%;
+    height:80%;
+    float:left;
+    }
+    table{
+    margin-left:5%;
+    }
+    th, td{
+    padding-top:2%;
+    }
+</style>
+<script>
+    $(document).ready(function(){
+      //your code
+    });
+    
+    function openpolicy(){
+        document.getElementById("pop").style.display = "block";
+    }
+    function closepolicy(){
+        document.getElementById("pop").style.display = "none";
+    }
+    function showDisplay(){
+        if(document.getElementsByName("dci")[0].checked == true){
+            document.getElementById("zcenter").style.display = "none";
+            document.getElementById("zbottom").style.display = "block";
+        }
+        else if(document.getElementsByName("dci")[1].checked == true){
+            document.getElementById("zcenter").style.display = "block";
+            document.getElementById("zbottom").style.display = "none";
+        }
+    }
+</script>
+<form method="post" id="damageclaims_form" action="{% url 'DamageClaims:damageclaimsform' %}">
+    {% csrf_token %}
+    <div class="container-fluid">
+        <div id="left">
+            <label><mark><b>Report ID: </b></mark></label>
+            <input name="id" type="text" class="unlock" {% if report.id %} value = "{{ report.id }}" {% endif %}>
+            <br>
+            <input name="fast_left" type="submit" class="unlock" value="&#x25C0;&#x25C0;">
+            <input name="left" type="submit" class="unlock" value="&#x25C0;">
+            <input name="right" type="submit" class="unlock" value="&#x25B6;">
+            <input name="fast_right" type="submit" class="unlock" value="&#x25B6;&#x25B6;">
+            <br>
+
+            <input name="add_report" type="submit" class="unlock" value="Add Report" style="width: 130px;">
+            <input name="find_report" type="submit" class="unlock" value="Find Report" style="width: 130px;">
+            <br>
+
+            <input name="save_report" type="submit" class="unlock" value="Save Report" style="width: 130px;">
+            <input name="refresh" type="button" class="unlock" value="Refresh" style="width: 130px;">
+            <br>
+
+            <input name="update_report" type="submit" class="unlock" value="Update Report" style="width: 130px;">
+            <input name="print_response" type="button" class="unlock" value="Print Report" style="width: 130px;" onclick="window.print()">
+            <br>
+
+            <input name="delete_report" type="submit" class="unlock" value="Delete Report" style="width: 130px;">
+            
+            <br>
+        </div>
+        <div id="right">
+            <div id="rightTop">
+                <label> Date</label>
+                <input name="datetext" type="text" id="date" {% if report.date %} value="{{ report.date|date:"Y-m-d" }}" {% endif %}>
+                <label name="time" > Time</label>
+                <input type="time" name="timetext" {% if report.time %} value="{{ report.time }}" {% endif %}/>
+                <label name="opearatorlabel" style="margin-left:20%"> Operator</label>
+                <select id="opearator" name="operator_name">
+                    {% for operator in all_Operators %}
+                    <option {% if operator.name == report.operators %} selected {% endif %}>{{operator.name}} </option>
+                    {% endfor %}
+                </select>
+                <br><br>
+                <input type="radio" name="dci" id="damage" value="1" onchange="showDisplay()" checked style="margin-left:5%" > <label>Damage Claims </label>
+                <input type="radio" name="dci" id="inf" value="2" onchange="showDisplay()"> <label>Information </label>
+            </div>
+            <p style="text-align:center"> <b> DAMAGE CLAIMS </b> </p>
+            <div id="rightCenter">
+                <div style="z-index:0;position:absolute">
+                    <label style="margin-left:3%;margin-top:2%"> Caller Name</label>
+                    <input type="text" name="callername" {% if report.name %} value = "{{ report.name }}" {% endif %}/>
+                    <label style="margin-left:5%;margin-top:2%"> Address</label>
+                    <input type="text" name="address" style="width:50%" {% if report.address %} value = "{{ report.address }}" {% endif %}> <br>
+                    <label style="margin-left:3%;margin-top:1%"> City</label>
+                    <input type="text" name="city" style="width:16%" {% if report.city %} value = "{{ report.city }}" {% endif %}/>
+                    <label style="margin-left:3%;margin-top:1%"> State</label>
+                    <input type="text" name="state" style="width:16%" {% if report.state %} value = "{{ report.state }}" {% endif %}/>
+                    <label style="margin-left:3%;margin-top:1%">  Zip Code</label>
+                    <input type="text" name="zipcode" style="width:10%" {% if report.zip %} value = "{{ report.zip }}" {% endif %}/>
+                    <label style="margin-left:3%;margin-top:1%"> Phone Number</label>
+                    <input type="text" name="phonenumber" style="width:16%" {% if report.phone_number %} value = "{{ report.phone_number }}" {% endif %}/> <br>
+                    <div id="rightCenterLeft">
+                        <table>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" name="nysdot" value="1" {% if report.nysdot_claims %} checked="true" {% endif %} />
+                                    <label> NYSDOT Claims</label>
+                                </th>
+                                <td>
+                                    <label style="background-color:yellow"> Regional Claims Engineer - 716-847-3173</label><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" name="erie" value="1" {% if report.erie_county %} checked="true" {% endif %}>
+                                    <label> Erie County</label>
+                                </th>
+                                <td>
+                                    <label style="background-color:yellow"> Erie County - 716-858-8369</label><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" name="nysta" value="1" {% if report.nysta %} checked="true" {% endif %}/>
+                                    <label> NYSTA</label>
+                                </th>
+                                <td>
+                                    <label style="background-color:yellow"> NYSTA - 518-436-2981</label><br>
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                        <label style="margin-left:5%"> Other</label>
+                        <input type="text" name="other" style="width:60%;;margin-left:3%" {% if report.other %} value = "{{ report.other }}" {% endif %}>
+                    </div>
+                    <div id="rightCenterRight">
+                        <label name="vehinfo" style="margin-left:5%;margin-top:5%"> Vehicle Information</label><br>
+                        <textarea rows="6" cols="60" name="vehicle_info" style="margin-top:1%"> {% if report.vehicle_infomation %} {{ report.vehicle_infomation }} {% endif %}</textarea>
+                    </div>
+                </div>
+                <div id="zcenter" style="width:61%;height:33%;z-index:1;display:none;opacity:0.5;position:absolute;background-color:grey"></div>
+            </div>
+            <P style="text-align:center"> <b> GENERAL INFORMATION </b> </P>
+            <div id="rightBottom">
+                <div style="z-index:0;position:absolute">
+                    <label style="margin-left:5%;margin-top:1%"> Description</label><br>
+                    <textarea rows="7" cols="120" style="margin-left:5%;margin-top:1%" id="bottomtextarea" name="general_info" >{% if report.information_box %} {{ report.information_box }} {% endif %}</textarea>
+                </div>
+                <div id="zbottom" style="width:61%;height:25%;z-index:1;display:block;opacity:0.5;position:absolute;background-color:grey"></div>
+            </div>
+            <br>
+            <button type="submit" value="Email" >Email Erie County</button>
+        </div>
+    </div>
+</form>
+{% if unlockPage == True %}
+    <script>
+        $('input').attr('disabled', false)
+        $('.unlock').attr('disabled', false)
+    </script>
+{% else %}
+    <script>
+        $('input').attr('disabled', true)
+        $('.unlock').attr('disabled', false)
+        $('input[name="csrfmiddlewaretoken"]').attr('disabled', false)
+    </script>
+{% endif %}
+{% endblock %}

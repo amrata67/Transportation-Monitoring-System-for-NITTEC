@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html land="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <title>Construction Projects</title>
+    </head>
+    <body>
+        <table class="table table-sm table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">D-Number</th>
+                    <th scope="col">Road</th>
+                    <th scope="col">To</th>
+                    <th scope="col">From</th>
+                    <th scope="col">County</th>
+                    <th scope="col">City/Road</th>
+                    <th scope="col">Project Description</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+                {% if projectsList %}
+                    {% for project in projectsList %}
+                    <tr>
+                        <td>{{ project.dnumber }}</td>
+                        <td>{{ project.road }}</td>
+                        <td>{{ project.end }}</td>
+                        <td>{{ project.start }}</td>
+                        <td>{{ project.county }}</td>
+                        <td>{{ project.place }}</td>
+                        <td>{{ project.description }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td>lkjlk</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    <div class="float-right">
+        <button class="btn btn-outline-primary" type="button" onclick="location.href='{% url 'construction:addProject' %}'">Add Record</button>
+        <button class="btn btn-outline-danger" type="button">Exit</button>
+    </div>
+    <form action="{% url 'construction:projects' %}" method="GET">
+        {% csrf_token %}
+        <input class="btn btn-outline-dark" value="Print Summary" name="printProjects" type="submit">
+    </form>
+    </body>
+</html>

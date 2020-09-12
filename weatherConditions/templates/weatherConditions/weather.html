@@ -1,0 +1,75 @@
+{% extends "home/home.html" %}
+
+{% block head %} Weather/Road Conditions {% endblock %}
+{% block content %}
+<form action="{%  url 'weatherConditions:weather' %}" method="post">
+    {%  csrf_token %}
+    <div class="row">
+        <div class="col-lg-4"></div>
+        <div class = "col-lg-4">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="bluebg">
+                        <h1>
+                            <div style="text-align: center; background-color : darkred;"><span style="color: white; "><b><i>NITTEC</i></b></span></div>
+                        </h1>
+                        <h1>
+                            <center><font color="white"><u>Weather/Road Conditions</u></font></center>
+                        </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <br><br>
+                    <label for="date">Date: </label>
+                </div>
+                <div class="col-lg-3">
+                    <br><br>
+                    <input type="text" name="date" size="5" required>
+                    <br><br>
+                </div>
+                <div class="col-lg-3">
+                    <br><br>
+                    <label for="time">Time: </label>
+                </div>
+                <div class="col-lg-3">
+                    <br><br>
+                    <input type="text" name="time" size="5" required>
+                    <br><br>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <label for="operator">Operator:</label>
+            <br>
+            <input type="text" name="operator" required>
+            <br><br>
+
+            <label for="agency">Reporting Agency:</label>
+            <br>
+            <input type="text" name="agency" required>
+            <br><br>
+
+            <label for="operatorResp">Operator Response:</label>
+            <br>
+            <input type="text" name="operatorResp" required>
+            <br><br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">
+            <label for="genDescription">General Description</label>
+            <br>
+            <textarea name="comment" rows="4" cols="57"></textarea>
+        </div>
+        <div class="col-lg-4">
+            <br>
+            <input type="button" value="Spell Check" align="center">
+            <br><br>
+            <input type="button" value="Exit">
+        </div>
+    </div>
+</form>
+{% endblock %}

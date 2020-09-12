@@ -1,0 +1,139 @@
+{% extends "home/home.html" %}
+
+{% block head %} Snow and Ice Page {% endblock %}
+{% block content %}
+<style>
+    .whitebg{
+        background-color: white;
+    }
+    .padding-right{
+        padding-right: 40px;
+    }
+    .padding-top-bot{
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+</style>
+<form action="{% url 'snowandice:index' %}" method="post">
+    {% csrf_token %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <label for="addInfo">Additional Information</label>
+                <br>
+                <textarea name="addInfo" rows="3" cols="56"></textarea>
+                <br><br>
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="padding-right">
+                            <label for="responseInfo">Operators response</label>
+                            <br>
+                            <div class="row">
+                                <textarea name="responseInfo" rows="4" cols="56"></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="padding-top-bot">
+                                        <input type="submit" value="Add Response Information" name="addRespInfo">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6"></div>
+                                <div class="col-lg-3">
+                                    <div class="padding-top-bot">
+                                        <input type="button" value="Print Response">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+
+                        <label for="callName">Caller Name:</label>
+                        <br>
+                        <input type="text" name="callName" required>
+                        <br><br>
+
+                        <label for="callPhone">Caller Phone Number:</label>
+                        <br>
+                        <input type="text" name="callPhone" required>
+                        <br><br>
+
+                        <label for="org">Caller Organization:</label>
+                        <br>
+                        <input type="text" name="org" required>
+                        <br><br>
+
+                        <label for="agency">Owning Agency:</label>
+                        <br>
+                        <input type="text" name="agency" required>
+                        <br><br>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="street">Route/Street:</label>
+                        <br>
+                        <input type="text" name="street" required>
+                        <br><br>
+
+                        <label for="direction">Direction:</label>
+                        <br>
+                        <input type="text" name="direction" required>
+                        <br><br>
+
+                        <label for="cStreet">Cross Street:</label>
+                        <br>
+                        <input type="text" name="cStreet" required>
+                        <br><br>
+                        <label for="municipality">Municipality:</label>
+                        <br>
+                        <input type="text" name="municipality" required>
+                        <br><br>
+                    </div>
+                </div>
+            </div>
+            <span class="border border-danger">
+                <div class="col-lg-12">
+                    <label for="dotBusinessHours"><b>NYSDOT</b></label>
+                    <br>
+                    <input type="checkbox" name="dotBusinessHours"  required> DOT Residency/Business Hours
+                    <br>
+                    <input type="checkbox" name="dotAfterHours" required> DOT HMS After Hours
+                    <br><br>
+
+                    <label for="TSOC"><b>NYSTA</b></label>
+                    <br>
+                    <input type="checkbox" name="TSOC" required> NYSTA/TSOC
+                    <br><br>
+
+                    <label for="erieShop"><b>County</b></label>
+                    <br>
+                    <input type="checkbox" name="erieShop" required> Erie County Shop
+                    <br>
+                    <input type="checkbox" name="erieAfter" required> Erie County After Hours Supervisor
+                    <br>
+                    <input type="checkbox" name="niagaraShop" required> Niagara County Shop
+                    <br>
+                    <input type="checkbox" name="niagaraShop" required> Niagara County After Hours Supervisor
+                    <br><br>
+
+                    <label for="townDepartment"><b>NYSTA</b></label>
+                    <br>
+                    <input type="checkbox" name="townDepartment" required> Town Highway Department
+                    <br>
+                    <input type="checkbox" name="townSuper" required> Town Highway After Hours Supervisor
+                    <br><br>
+                </div>
+            </span>
+
+        </div>
+    </div>
+    <input type="submit" value="Add Project" name="addProject">
+</form>
+{% endblock %}

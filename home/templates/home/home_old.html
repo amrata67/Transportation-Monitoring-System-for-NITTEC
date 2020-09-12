@@ -1,0 +1,81 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>CodePen - A Pen by  Mikey O</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'home/style.css' %}">
+    <script type = "text/javascript" src="{% static 'home/js/scripts.js' %}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body onload="renderTime();" >
+<div class='all'>
+  <div class='admin-header'>
+    <div class='header-text'>
+      <div class="text-left" style="width:50%">
+        <img src="{% static 'home/images/nittec.jpg' %}" class="img-thumbnail" alt="Cinque Terre"/>
+        <div id="clockDisplay" role="navigation"></div>
+      </div>
+    </div>
+  </div>
+  <div id="side-bar">
+    <div class='admin-sidebar'>
+        <ul class="nav navbar-nav side-nav">
+            <li class="active">
+                <a href="index.html"> Incident/Congestion </a>
+            </li>
+            <li>
+                <a href="charts.html"> Border Crossing Delays</a>
+            </li>
+            <li>
+                <a href="tables.html"> Construction Maintenance</a>
+            </li>
+            <li>
+                <a href="forms.html"> Snow and Ice</a>
+            </li>
+            <li>
+                <a href="bootstrap-elements.html"> Equipment Problems</a>
+            </li>
+            <li>
+                <a href="bootstrap-grid.html"> Weather Road Conditions</a>
+            </li>
+            <li>
+                <a href="bootstrap-grid.html"> Debris/Signal Problems</a>
+            </li>
+            <li>
+                <a href="blank-page.html"> Damage Claims Information</a>
+            </li>
+            <li>
+                <a href="index-rtl.html"> General Events</a>
+            </li>
+            <li>
+                <a href="charts.html"> Amber Events</a>
+            </li>
+            <li>
+                <a href="charts.html"> Construction Projects</a>
+            </li>
+            <li>
+                <a href="charts.html"> Snow/Ice Management</a>
+          </li>
+          <li>
+              <a href="charts.html"> PVMS Management</a>
+          </li>
+    </ul>
+  </div>
+  </div>
+
+      <div id="center-content">
+        <div class="container-fluid">
+            {% block content %}
+
+            {% endblock %}
+        </div>
+        <!-- /.container-fluid -->
+  </div>
+      </div>
+</body>
+</html>

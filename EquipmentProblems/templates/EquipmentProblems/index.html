@@ -1,0 +1,265 @@
+{% extends "home/home.html" %}
+
+{% block head %} Equipment Problems {% endblock %}
+{% block content %}
+<style>
+    #top{
+        padding-top:1%;
+        padding-left:2%;
+        height:15%
+    }
+    #center{
+        background-color:transparent;
+        height:40%;
+        margin-left:5%;
+        width:90%;
+    }
+    #bottom_1{
+        background-color:;
+        height:20%;
+        margin-left:5%;
+        width:75%;
+
+        padding-left:5%;
+    }
+    #bottom_2{
+        background-color:;
+        height:20%;
+        margin-left:5%;
+        width:75%;
+
+        padding-left:5%;
+    }
+    #bottomLeft{
+        width:20%;
+        background-color:transparent;
+        float:left;
+    }
+    #bottomCenter{
+        width:20%;
+        background-color:transparent;
+        float:left;
+    }
+    #bottomRight{
+        width:40%;
+        float:left;
+        background-color:transparent;
+        margin-top:1.5%;
+    }
+    #alert{
+        margin-top:5%;
+        margin-left:10%;
+    }
+    #topLeft{
+        height:10%;
+        width:30%;
+        background-color:;
+        float:left;
+    }
+    #topCenter{
+        height:10%;
+        width:30%;
+        background-color:;
+        float:left;
+    }
+    #topRight{
+        height:100%;
+        width:40%;
+        background-color:;
+        float:left;
+    }
+    #topRightLeft{
+        height:100%;
+        width:40%;
+        float:left;
+        background-color:;
+    }
+    #topRighRight{
+        height:100%;
+        width:50%;
+        float:left;
+        background-color:;
+    }
+    #centerLeft{
+        background-color:;
+        width:25%;
+        float:left;
+
+    }
+    #centerCenter{
+        width:40%;
+        float:left;
+        background-color: ;
+    }
+    #centerRight{
+        width:30%;
+        float:left;
+        background-color: ;
+    }
+    #centerRightLeft{
+        height:100%;
+        width:60%;
+        background-color:;
+        float:left;
+    }
+    #centerRightRight{
+        height:100%;
+        width:40%;
+        background-color:;
+        float:left;
+    }
+</style>
+<div class="container-fluid">
+        <div id="top">
+            <div id="topLeft">
+                <label name="reportid"> Report ID</label>
+                <input type="text" name="action_text" style="width:20%"/>
+                <label name="action_label" style="margin-left:3%"> Action</label>
+                <select id="action">
+                    <option value="find"> Find Report</option>
+                    <option value="add"> Add Report</option>
+                    <option value="save"> Save Report </option>
+                    <option value="update">Update Report</option>
+                    <option value="print"> Print Report</option>
+                    <option value="delete"> Delete Report</option>
+                    <option value="refresh"> Refresh</option>
+                </select>
+                <button type="submit" value="go" > Go</button>
+            </div>
+            <div id="topCenter">
+                <label>Start Date:</label>
+                &nbsp<input type="text" name="startdate" style="width:20%">
+                &nbsp&nbsp&nbsp&nbsp&nbsp<label>End Date:</label>
+                &nbsp<input type="text" name="enddate" style="width:20%"><br>
+                <label>Start Time:</label>
+                &nbsp<input type="text" name="starttime" style="width:20%">
+                &nbsp&nbsp&nbsp&nbsp<label>End Time:</label>
+                <input type="text" name="endtime" style="width:20%">
+                <br>
+                <br>
+                <label name="statuslabel" style="margin-left:20%"> Status</label>
+                <input type="checkbox" name="status" > Closed
+
+            </div>
+            <div id="topRight">
+                <div id="topRightLeft">
+                    <label> <b> Operational Status </b> </label><br>
+                    <input type="radio" id="service" name="service-maintain">
+                    <label> Out Of Service</label><br>
+                    <input type="radio" id="maintain" name="service-maintain">
+                    <label> Needs Maintenance</label><br>
+                </div>
+                <div id="topRightRight">
+                    <label> <b> Website CCTV </b> </label><br>
+                    <label> Turned Off Date:</label>
+                    <input type="text" name="offdate" style="width:20%"><br>
+                    <label> Turned Off Time:</label>
+                    <input type="text" name="offtime" style="width:20%"><br>
+                    <label> Turned On Date:</label>
+                    <input type="text" name="ondate" style="width:20%"><br>
+                    <label> Turned On Time:</label>
+                    <input type="text" name="ontime" style="width:20%"><br>
+                </div>
+            </div>
+        </div>
+
+        <div id="center">
+            <div id="centerLeft">
+                <label style="margin-left:5%;margin-top:5%"> NITTEC Employees </label><br>
+                <select id="nittecemp" style="margin-left:5%;width:55%;margin-top:2%">
+                    <option value="sm"> Smith, Mike</option>
+                    <option value="vk"> Vamshi</option>
+                </select>
+                <br><br>
+                <label style="margin-left:5%"> Reporting Name </label><br>
+                <select id="reportingname" style="margin-left:5%;width:55%;margin-top:2%">
+                    <option value="sm"> Smith, Mike</option>
+                    <option value="vk"> Vamshi</option>
+                </select>
+                <br><br>
+                <label style="margin-left:5%"> Reporting Number Agency </label><br>
+                <select id="reportingnumber" style="margin-left:5%;width:55%;margin-top:2%">
+                    <option value="sm"> Smith, Mike</option>
+                    <option value="vk"> Vamshi</option>
+                </select>
+                <br><br>
+                <label style="margin-left:5%"> Phone Number </label><br>
+                <select id="phno" style="margin-left:5%;width:55%;margin-top:2%">
+                    <option value="sm"> Smith, Mike</option>
+                    <option value="vk"> Vamshi</option>
+                </select>
+                <br><br>
+                <label style="margin-left:5%"> Ticket Number </label><br>
+                <select id="tno" style="margin-left:5%;width:55%;margin-top:2%">
+                    <option value="sm"> Smith, Mike</option>
+                    <option value="vk"> Vamshi</option>
+                </select>
+
+            </div>
+            <div id="centerCenter" >
+
+                <div style="margin-top:3%">
+                    <label name="desclabel" style="margin-left=5%"> <b> Description </b></label><br>
+                    <textarea rows="11" cols="60" style="margin-top:1%" name="desc"></textarea>
+                </div>
+
+            </div>
+
+            <div id="centerRight">
+                <div id="centerRightLeft">
+                    <label style="margin-left:5%;margin-top:5%"> Equipment Name </label><br>
+                    <select id="eqname" style="margin-left:5%;width:70%;margin-top:2%">
+                        <option value="sm"> Smith, Mike</option>
+                        <option value="vk"> Vamshi</option>
+                    </select>
+                    <br><br>
+                    <label style="margin-left:5%"> Affected Equipment/System </label><br>
+                    <select id="affeqp" style="margin-left:5%;width:70%;margin-top:2%">
+                        <option value="sm"> Smith, Mike</option>
+                        <option value="vk"> Vamshi</option>
+                    </select>
+                    <br><br>
+                    <label style="margin-left:5%"> Type of Problem </label><br>
+                    <select id="toprob" style="margin-left:5%;width:70%;margin-top:2%">
+                        <option value="sm"> Smith, Mike</option>
+                        <option value="vk"> Vamshi</option>
+                    </select>
+                    <br><br>
+                    <label style="margin-left:5%"> Owning Agency </label><br>
+                    <select id="oa" style="margin-left:5%;width:70%;margin-top:2%">
+                        <option value="sm"> Smith, Mike</option>
+                        <option value="vk"> Vamshi</option>
+                    </select>
+                    <br><br>
+                    <label style="margin-left:5%"> Outside Support </label><br>
+                    <select id="os" style="margin-left:5%;width:70%;margin-top:2%">
+                        <option value="sm"> Smith, Mike</option>
+                        <option value="vk"> Vamshi</option>
+                    </select>
+                </div>
+                <div id="centerRightRight">
+                    <br><br>
+                    <button type="submit" value="nittec_maint" class="btn btn-default" > Email NITTEC Maintenance</button>
+                    <br><br><br>
+                    <button type="submit" value="equip_policy" class="btn btn-default" > Read Equipment Problem Policy</button>
+                </div>
+            </div>
+        </div>
+        <div id="bottom_1">
+            <div style="margin-top:3%">
+                <label name="notifications" style="margin-left=5%"> <b> Notification/Outside Support Information </b></label><br>
+                <textarea rows="11" cols="130" style="margin-top:1%" name="add_notification"></textarea>
+            </div>
+            <button type="submit" value="notification_info" class="btn btn-default" > Add Notification Information</button>
+        </div>
+        <div id="bottom_2">
+            <div style="margin-top:8%">
+                <label name="action" style="margin-left=5%"> <b> NITTEC System Staff Action Taken </b></label><br>
+                <textarea rows="11" cols="130" style="margin-top:1%" name="nittecaction"></textarea>
+            </div>
+            <button type="submit" value="response_info" class="btn btn-default" > Add Response Information</button>
+            <button type="submit" value="print" class="btn btn-default" > Print Response Information</button>
+        </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "home/home.html" %}
+
+{% block head %} Activities/Communication Log {% endblock %}
+{% block content %}
+<style>
+    .text-center{
+        text-align : center;
+        padding-top : 3%;
+    }
+</style>
+<div class="text-center">
+    <form action="{% url 'ActComLog:submit_data' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="ddm">Day To Day Message</label><br>
+            <textarea id="ddmta" rows="10" cols="100" name="day_message">{{all_acl.0.daytoday}}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="ltm">Long Term Message</label><br>
+            <textarea id="ltmta" rows="10" cols="100" name="long_message">{{all_acl.0.longtermmessage}}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="dtr">Dates to Remember</label><br>
+            <textarea id="dtrta" rows="10" cols="100" name="dates_to_remember">{{all_acl.0.datestoremember}}</textarea>
+        </div>
+        <button type="submit" value="Continue" class="btn btn-default">Continue</button>
+    </form>
+</div>
+
+{% endblock %}

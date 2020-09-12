@@ -1,0 +1,242 @@
+{% extends "home/home.html" %}
+
+{% block head %} General Events {% endblock %}
+{% block content %}
+<style>
+    #top{
+        padding-top:1%;
+        padding-left:2%;
+        height:10%
+    }
+    #center{
+        background-color:transparent;
+
+        height:40%;
+        margin-left:5%;
+        width:90%;
+    }
+    #bottom{
+        background-color:;
+
+        height:30%;
+        margin-left:5%;
+        width:75%;
+        padding-top:2%;
+        padding-left:15%;
+    }
+    #bottomLeft{
+        width:20%;
+        background-color:transparent;
+        float:left;
+    }
+    #bottomCenter{
+        width:20%;
+        background-color:transparent;
+        float:left;
+    }
+    #bottomRight{
+        width:40%;
+        float:left;
+        background-color:transparent;
+        margin-top:1.5%;
+    }
+    #alert{
+        margin-top:5%;
+        margin-left:10%;
+    }
+    #topLeft{
+        height:10%;
+        width:30%;
+        background-color:;
+        float:left;
+    }
+    #topCenter{
+        height:10%;
+        width:50%;
+        background-color:;
+        float:left;
+    }
+    #topBottom{
+        height:10%;
+        width:20%;
+        background-color:;
+        float:left;
+    }
+    #centerLeft{
+        background-color:;
+        width:25%;
+        float:left;
+
+    }
+    #centerCenter{
+        width:45%;
+        float:left;
+        background-color: ;
+    }
+    #centerRight{
+        width:30%;
+        float:left;
+        background-color: ;
+    }
+</style>
+<div class="container-fluid">
+        <div id="top">
+            <div id="topLeft">
+                <label name="reportid"> Report ID</label>
+                <input type="text" name="action_text" style="width:20%"/>
+                <label name="action_label" style="margin-left:3%"> Action</label>
+                <select id="action">
+                    <option value="find"> Find Report</option>
+                    <option value="add"> Add Report</option>
+                    <option value="save"> Save Report </option>
+                    <option value="update">Update Report</option>
+                    <option value="print"> Print Report</option>
+                    <option value="delete"> Delete Report</option>
+                    <option value="refresh"> Refresh</option>
+                </select>
+                <button type="submit" value="go" > Go</button>
+            </div>
+            <div id="topCenter">
+                <label name="date" style="margin-left:15%"> Date</label>
+                <input type="text" name="datetext" />
+                <label name="time" style="margin-left:3%"> Time</label>
+                <input type="text" name="timetext"/>
+                <br>
+                <br>
+                <label name="statuslabel" style="margin-left:20%"> Status</label>
+                <input type="checkbox" name="status" > Closed
+                <input type="radio" name="pusf" style="margin-left:5%"> <label name="dc">Public Safety Campaign </label>
+                <input type="radio" name="pusf"> <label name="inf">Special <Event></Event> </label>
+            </div>
+            <div id="topBottom">
+                <label name="opearatorlabel" style="margin-left:10%"> Operator</label>
+                <select id="opearator">
+                    <option> Schwartz, Andrew</option>
+                </select>
+
+            </div>
+        </div>
+
+        <div id="center">
+            <div id="centerLeft">
+                <p style="margin-left:5%">  Name of Event </p>
+                <input type="text" name="name" style="margin-left:5%">
+                <p style="margin-left:5%">  Caller Name </p>
+                <select id="callername" style="margin-left:5%;width:55%">
+                    <option value="sm"> Smith, Mike</option>
+                    <option value="vk"> Vamshi</option>
+                </select>
+                <p style="margin-left:5%">  Caller Phone # </p>
+                <input type="text" name="phone" style="margin-left:5%">
+                <p style="margin-left:5%">  Caller Organization </p>
+                <select id="callername" style="margin-left:5%;width:55%">
+                    <option value="ni"> NITTEC</option>
+                    <option value="vk"> Vamshi</option>
+                </select>
+
+            </div>
+            <div id="centerCenter" style="padding-top:1%">
+                <label>Start Date:</label>
+                &nbsp<input type="text" name="startdate" style="width:20%">
+                &nbsp&nbsp&nbsp&nbsp<label>End Date:</label>
+                &nbsp<input type="text" name="enddate" style="width:20%"><br>
+                <label>Start Time:</label>
+                &nbsp<input type="text" name="starttime" style="width:20%">
+                &nbsp&nbsp&nbsp&nbsp<label>End Time:</label>
+                <input type="text" name="endtime" style="width:20%">
+                <div style="margin-top:3%">
+                    <label name="geninfo" style="margin-left=5%"> <b> General Information </b></label><br>
+                    <textarea rows="11" cols="70" style="margin-top:1%"></textarea>
+                </div>
+                <button type="submit" value="update" class="btn btn-default" > Update General Information</button>
+                <button type="submit" value="print" class="btn btn-default" > Print General Information</button>
+            </div>
+            <div id="centerRight">
+                <p style="margin-left:5%">  <b> Crossroads</b> </p>
+                <table frame="box" style="margin-left:5%">
+                    <tr>
+                        <th align="right"> <label> ID</label></th>
+                        <td> <input type="text" name="id"></td>
+                    </tr>
+                    <tr>
+                        <th rowspan="3" align="center"> Activated</th>
+                        <td> <input type="checkbox" name="adms"> DMS</td>
+                    </tr>
+                    <tr>
+                        <td> <input type="checkbox" name="aemail">Fax/Email</td>
+                    </tr>
+                    <tr>
+                        <td> <input type="checkbox" name="aweb">Web</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="3" align="center"> Deactivated</th>
+                        <td> <input type="checkbox" name="ddms"> DMS</td>
+                    </tr>
+                    <tr>
+                        <td> <input type="checkbox" name="demail">Fax/Email</td>
+                    </tr>
+                    <tr>
+                        <td> <input type="checkbox" name="dweb">Web</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2" align="center"> Website</th>
+                        <td> <input type="checkbox" name="ext"> Extended Manual</td>
+                    </tr>
+                    <tr>
+                        <td> <input type="checkbox" name="del">Deleted Manual</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div id="bottom">
+            <div id="bottomLeft">
+                <label> DMS List</label><br>
+                <select id="dmslist" name="dmslist" multiple style="height:65%">
+                    <option value="Amherst"> DMS 1.0. S I-990 Amherst</option>
+                    <option value="Colvin"> DMS 3.8 W I-290 Colvin</option>
+                </select>
+            </div>
+            <div id="bottomCenter">
+                <label> DMS Active</label><br>
+                <textarea rows="10" cols="18" name="dmsactive"></textarea>
+            </div>
+            <div id="bottomRight">
+                <table frame="box">
+                    <tr>
+                        <td><input type="checkbox" name="dms"> DMS</td>
+                        <td align="right"> Activation Time</td>
+                        <td> <input type="text" name="dmsact>"</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td align="right"> Deactivation Time</td>
+                        <td> <input type="text" name="dmsdeact>"</td>
+                    </tr>
+
+                    <tr>
+                        <td><input type="checkbox" name="dms"> PVMS</td>
+                        <td align="right"> Activation Time</td>
+                        <td> <input type="text" name="pvmsact>"</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td align="right"> Deactivation Time</td>
+                        <td> <input type="text" name="pvmsdeact>"</td>
+                    </tr>
+
+                    <tr>
+                        <td><input type="checkbox" name="dms"> HAR</td>
+                        <td align="right"> Activation Time</td>
+                        <td> <input type="text" name="haract>"</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td align="right"> Deactivation Time</td>
+                        <td> <input type="text" name="hardeact>"</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+</div>
+
+{% endblock %}

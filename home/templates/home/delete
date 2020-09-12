@@ -1,0 +1,157 @@
+<div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+
+<div id="wrapper" style="background-color:white">
+</div>
+
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+</nav>
+
+
+<div class="">
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+
+
+            <!-- Top Menu Items -->
+            <!-- Top Menu Items -->
+
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li class="active">
+                        <a href="index.html"> Incident/Congestion </a>
+                    </li>
+                    <li>
+                        <a href="charts.html"> Border Crossing Delays</a>
+                    </li>
+                    <li>
+                        <a href="tables.html"> Construction Maintenance</a>
+                    </li>
+                    <li>
+                        <a href="forms.html"> Snow and Ice</a>
+                    </li>
+                    <li>
+                        <a href="bootstrap-elements.html"> Equipment Problems</a>
+                    </li>
+                    <li>
+                        <a href="bootstrap-grid.html"> Weather Road Conditions</a>
+                    </li>
+                    <li>
+                        <a href="bootstrap-grid.html"> Debris/Signal Problems</a>
+                    </li>
+                    <li>
+                        <a href="blank-page.html"> Damage Claims Information</a>
+                    </li>
+                    <li>
+                        <a href="index-rtl.html"> General Events</a>
+                    </li>
+                    <li>
+                        <a href="charts.html"> Amber Events</a>
+                    </li>
+                    <li>
+                        <a href="charts.html"> Construction Projects</a>
+                    </li>
+                    <li>
+                        <a href="charts.html"> Snow/Ice Management</a>
+                    </li>
+                    <li>
+                        <a href="charts.html"> PVMS Management</a>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+        </div>
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                {% block content %}
+
+                {% endblock %}
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    <!-- /#wrapper -->
+
+
+
+    --------------------------------------------------------
+    <body onload="renderTime();" style="background-color:red">
+
+    <div class="text-center" style="background-color:white">
+        <img src="{% static 'home/images/nittec.jpg' %}" class="img-thumbnail" alt="Cinque Terre"/>
+        <div id="clockDisplay" role="navigation"></div>
+    </div>
+    <div class="navbar-header">
+        <p class="text-center"> Hello </p>
+    </div>
+    <div>
+    <nav class="navbar navbar-inverse " >
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav side-nav">
+                <li class="active">
+                    <a href="index.html"> Incident/Congestion </a>
+                </li>
+                <li>
+                    <a href="charts.html"> Border Crossing Delays</a>
+                </li>
+                <li>
+                    <a href="tables.html"> Construction Maintenance</a>
+                </li>
+                <li>
+                    <a href="forms.html"> Snow and Ice</a>
+                </li>
+                <li>
+                    <a href="bootstrap-elements.html"> Equipment Problems</a>
+                </li>
+                <li>
+                    <a href="bootstrap-grid.html"> Weather Road Conditions</a>
+                </li>
+                <li>
+                    <a href="bootstrap-grid.html"> Debris/Signal Problems</a>
+                </li>
+                <li>
+                    <a href="blank-page.html"> Damage Claims Information</a>
+                </li>
+                <li>
+                    <a href="index-rtl.html"> General Events</a>
+                </li>
+                <li>
+                    <a href="charts.html"> Amber Events</a>
+                </li>
+                <li>
+                    <a href="charts.html"> Construction Projects</a>
+                </li>
+                <li>
+                    <a href="charts.html"> Snow/Ice Management</a>
+                </li>
+                <li>
+                    <a href="charts.html"> PVMS Management</a>
+                </li>
+            </ul>
+    </nav>
+    </div>
+    <div id="page-wrapper">
+        <div class="container-fluid" style="background-color:green">
+            {% block content %}
+
+            {% endblock %}
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+
+
+</body>
+<!-- partial -->
+</html>

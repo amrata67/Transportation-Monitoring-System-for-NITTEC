@@ -1,0 +1,288 @@
+{% extends "home/home.html" %}
+
+{% block head %} Border Crossing {% endblock %}
+{% block content %}
+<style>
+    .redbg {
+        background-color: darkred;
+    }
+    .topPad5{
+        padding-top: 5px;
+    }
+    .topPad10{
+        padding-top: 10px;
+    }
+</style>
+<form action="{% url 'bordercrossing:page' %}" method="post">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-lg-2">
+
+        </div>
+        <div class="col-lg-2">
+        </div>
+        <div class="col-lg-4">
+            <div class="redbg">
+                <h1>
+                    <div style="text-align: center;"><span style="color: white; "><i>NITTEC</i></span></div>
+                </h1>
+                <h1>
+                    <center><font color="white"><u>Border Crossing Delay</u></font></center>
+                </h1>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <label for="callName">Caller Name:</label>
+            <br>
+            <input type="text" name="callName" required>
+            <br><br>
+
+            <label for="callPhone">Caller Phone Number:</label>
+            <br>
+            <input type="text" name="callPhone" required>
+            <br><br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-1">
+            <label for="closed"><b>Status</b></label>
+            <br>
+            <input type="checkbox" name="closed"  required> Closed
+            <br>
+        </div>
+        <div class="col-lg-2">
+            <label for="detectTime">Detection Time: </label>
+            <br><br>
+            <label for="returnTime">Return to Normal Conditions: </label>
+        </div>
+        <div class="col-lg-2">
+
+            <input type="text" name="detectTime" required>
+            <br><br>
+
+
+            <input type="text" name="returnTime" required>
+            <br><br>
+        </div>
+        <div class="col-lg-2">
+            <label for="dmsList">DMS List</label>
+            <br>
+            <textarea name="dmsList" rows="3" cols="28"></textarea>
+        </div>
+        <div class="col-lg-4">
+            <label for="org">Caller Organization:</label>
+            <br>
+            <input type="text" name="org" required>
+            <br><br>
+
+            <label for="agency">Owning Agency:</label>
+            <br>
+            <input type="text" name="agency" required>
+            <br><br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="row">
+                        <div class="col-lg-4"></div>
+                        <div class="col-lg-8">
+                            <label for="comment">Comments</label>
+                            <br>
+                            <textarea name="comment" rows="4" cols="57"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4"></div>
+                        <div class="col-lg-5">
+                            <div class="padding-top-bot">
+                                <input type="submit" value="Add Comment" name="addComment">
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="padding-top-bot">
+                                <input type="button" value="Print Comment">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3"></div>
+                        <div class="col-lg-2" name="col1">
+                            <br>
+                            <div class="topPad10">
+                                <label for="dmsActive">Activation Time: </label>
+                            </div>
+                            <br>
+                            <div class="topPad10">
+                                <label for="dmsDeactive">Deactivation Time: </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <br>
+                            <div class="topPad5">
+                                <input type="text" name="dmsActive" required>
+                            </div>
+                            <br>
+                            <input type="text" name="dmsDeactive" required>
+                            <br><br>
+                        </div>
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-2">
+                            <br>
+                            <div class="topPad10">
+                                <label for="pvmsActive">Activation Time: </label>
+                            </div>
+                            <br>
+                            <div class="topPad5">
+                                <label for="pvmsDeactive">Deactivation Time: </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <br>
+                            <div class="topPad5">
+                                <input type="text" name="pvmsActive" required>
+                            </div>
+                            <br>
+                            <input type="text" name="pvmsDeactive" required>
+                            <br><br>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <label for="dmsActive">DMS Active List</label>
+                    <br>
+                    <textarea name="dmsACtive" rows="3" cols="28"></textarea>
+                </div>
+            </div>
+            <div class="row">
+
+            </div>
+        </div>
+        <div class="col-lg-1">
+            <br>
+            <label for="DMS">Activated: </label>
+            <br><br><br>
+            <label for="deactDMS">County:</label>
+            <br><br><br>
+            <label for="enteredCARS">CARS:</label>
+            <br><br><br>
+            <label for="issuedAlert">TRANSALERT: </label>
+            <br><br><br>
+            <label for="notifyDelay">MTO: </label>
+        </div>
+        <div class="col-lg-3">
+            <input type="checkbox" name="DMS" required> DMS
+            <br>
+
+            <input type="checkbox" name="web" required> Web
+            <br>
+            <input type="checkbox" name="faxEmail" required> Fax/Email
+            <br><br>
+
+            <input type="checkbox" name="deactDMS" required> DMS
+            <br>
+            <input type="checkbox" name="deactWeb" required> Web
+            <br>
+            <input type="checkbox" name="deactFaxEmail" required> Fax/Email
+            <br><br>
+
+            <input type="checkbox" name="enteredCARS" required> Entered into CARS
+            <br>
+            <input type="checkbox" name="deletedCARS" required> Deleted from CARS
+            <br><br>
+
+            <input type="checkbox" name="issuedAlert" required> Issued TransAlert
+            <br>
+            <input type="checkbox" name="deletedAlert" required> Deleted TransAlert
+            <br><br>
+
+            <input type="checkbox" name="notifyDelay" required> Notified of Delays
+            <br>
+            <input type="checkbox" name="notifyClear" required> Notified Cleared
+            <br><br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2">
+            <div class="topPad5">
+                <label for="canadaPeaceBridge">Peace Bridge: </label>
+            </div>
+            <br>
+            <div class="topPad5">
+                <label for="canadaRainBridge">Rainbow Bridge: </label>
+            </div>
+            <br>
+            <div class="topPad5">
+                <label for="canadaQLBridge">Queenston-Lewiston Bridge: </label>
+            </div>
+        </div>
+        <div class="col-lg-1">
+            <input type="text" name="canadaPeaceBridge" size="3" required>
+            <br><br>
+            <input type="text" name="canadaRainBridge" size="3" required>
+            <br><br>
+            <input type="text" name="canadaQLBridge" size="3" required>
+        </div>
+        <div class="col-lg-1">
+            <input type="text" name="usaPeaceBridge" size="3" required>
+            <br><br>
+            <input type="text" name="usaRainBridge" size="3" required>
+            <br><br>
+            <input type="text" name="usaQLBridge" size="3" required>
+        </div>
+        <div class="col-lg-2">
+            <div class="topPad5">
+                <label for="initNotifyTSOC">Initial Notify Activate TSOC: </label>
+            </div>
+            <br>
+            <div class="topPad5">
+                <label for="harActiveTime">Activation Time: </label>
+            </div>
+            <br>
+            <div class="topPad5">
+                <label for="finalNotifyTSOC">Final Notify Deactivate TSOC: </label>
+            </div>
+            <br>
+            <div class="topPad5">
+                <label for="harDeactiveTime">Deactivation Time: </label>
+            </div>
+            <br>
+            <div class="topPad5">
+                <label for="updateNotifyTSOC">Update Notify TSOC: </label>
+            </div>
+            <br>
+            <div class="topPad5">
+                <label for="updateActiveTime">Update Activation: </label>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <input type="text" name="initNotifyTSOC" required>
+            <br><br>
+            <input type="text" name="harActiveTime" required>
+            <br><br>
+            <input type="text" name="finalNotifyTSOC" required>
+            <br><br>
+            <input type="text" name="harDeactiveTime" required>
+            <br><br>
+            <input type="text" name="updateNotifyTSOC" required>
+            <br><br>
+            <input type="text" name="updateActiveTime" required>
+        </div>
+        <div class="col-lg-4">
+            <label for="harUpdates"> Border Crossing HAR Updates</label>
+            <textarea name="harUpdates" rows="6" cols="57"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <label for="borderUpdates"> Border Crossing updates </label>
+        <br><br>
+    </div>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <textarea name="borderUpdates" rows="6" cols="150"></textarea>
+    </div>
+</form>
+{% endblock %}

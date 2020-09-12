@@ -1,0 +1,935 @@
+{% extends "home/home.html" %}
+{% load static %}
+{% block head %} Incident/Congestion {% endblock %}
+{% block content %}
+<style>
+    .sidenav {
+        height: 100%;
+        width: 0px;
+        position: fixed;
+        top: 0;
+        right: 0;
+        background-color:#000066;
+        color: white;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 10px;
+    }
+    
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        margin-right: 25px;
+    }
+
+    input {
+        color: black;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0px;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+    
+    @media screen and (max-height: 450px) {
+        .sidenav {padding-top: 15px;}
+    }
+</style>
+<script>
+    function getCaller() {
+        var x = document.getElementById("caller_name_select").value;
+        var ph = x.indexOf(", Ph:");
+        var org = x.indexOf(", Org:");
+        var res = x.substring(ph+6, org);
+        document.getElementById("callername").value = x.substring(0, ph);
+        document.getElementById("phone_id").value = res;
+        document.getElementById("caller_org").value = x.substring(org+7);
+    }
+</script>
+<form id="incident_form" action="{% url 'incident:incident_congestion' %}" method="POST">
+    {% csrf_token %}
+    <div style="clear: both;">
+        <div style="text-align: center; float: left;" class="border w-25 p-1">
+            <label><mark><b>Report ID*: </b></mark></label>
+            <input name="id" type="number" class="unlock" {% if report.id %} value = "{{ report.id }}" {% endif %}>
+            <br>
+
+            <input id="fast_left" name="fast_left" type="submit" class="unlock" value="&#x25C0;&#x25C0;" style="width: 50px;">
+            <input id="left" name="left" type="submit" class="unlock" value="&#x25C0;" style="width: 30px;">
+            <input id="right" name="right" type="submit" class="unlock" value="&#x25B6;" style="width: 30px;">
+            <input id="fast_right" name="fast_right" type="submit" class="unlock" value="&#x25B6;&#x25B6;" style="width: 50px;">
+            <br>
+
+            <input id="add_report" name="add_report" type="submit"  class="unlock" value="Add Report" style="width: 130px;">
+            <input id="find_report" name="find_report" type="submit" class="unlock"  value="Find Report" style="width: 130px;">
+            <br>
+
+            <input id="save_report" name="save_report" type="submit"  class="unlock" value="Save Report" style="width: 130px;" onclick="selectAll();">
+            <input id="delete_report" name="delete_report" type="submit"  class="unlock" value="Delete Report" style="width: 130px;">
+            <br>
+
+            <input id="update_report" name="update_report" type="submit" class="unlock"  value="Update Report" style="width: 130px;">
+            <input id="print_report" name="print_report" type="submit" class="unlock"  value="Print Report" style="width: 130px;">
+            <br>
+        </div>
+        <div style="float: left; margin-left: 12px; margin-top: 40px;" class="border">
+            <label>Date*:  </label>
+            <input name="date" type="date" id="date" {% if report.date %} value="{{ report.date|date:'Y-m-d' }}" {% endif %} required>
+            <label>Time*:  </label>
+            <input id="time" name="time" type="text" {% if report.Time %} value="{{ report.Time|time:'H:i' }}" {% endif %} required>
+            <input type="button" value="&#128368;" onclick="setTime('time');">
+            <br>
+            <label><mark><b>Status: </b></mark></label>
+            <label>Closed</label>
+            <input name="status" type="checkbox" {% if report.closed %}  checked="true" {% endif %}>
+            <br>
+            <input name="number_lanes" type="number" style="width: 50px;" {% if report.num_lanes_blocked %} value="{{ report.num_lanes_blocked }}" {% endif %}>
+            <label style="margin-left: 5px;"># of lanes</label>
+            <br>
+            <input name="full_road_closure" type="checkbox" style="margin-left: 85px;" {% if report.fullroadclosure %} checked {% endif %}>
+            <label style="margin-left: 5px">Full Road Closure</label>
+            <br>
+            <input name="secondary_incident" type="checkbox" style="margin-left: 85px;" {% if report.secondaryincident %} checked {% endif %}>
+            <label style="margin-left: 5px;">Secondary Incident</label>
+            <br>
+            <label>Seondary Incident Log # </label>
+            <input name="secondary_incident_number" type="number" style="width: 120px;" {% if report.secondaryincidentlognum %} value="{{ report.secondaryincidentlognum }}" {% endif %}>
+        </div>
+    </div>
+    <div style="margin-left: 40px; float: left;">
+        <label>Operator*</label>
+        <br>
+        <select id="operator" name="operator" style="width: 150px;" required>
+            <option></option>
+            {% for operator in operatorList %}
+                <option {% if operator == report.operators %} selected {% endif %}>{{ operator }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label>General Event Description</label>
+        <br>
+        <select name="general_event_description" style="width: 150px;">
+            {% for generalEvent in generalEventList %}
+                <option {%if generalEvent == report.gen_event %} selected {% endif %}>{{ generalEvent }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <br> 
+        <div>
+            <br>
+            <br>
+            <label><mark><b>Incident Timeline</b></mark></label>
+            <table class="border table-xs" style="text-align: right;">
+                <tr>
+                    <td>
+                        <label>Detection Time: </label>
+                    </td>
+                    <td>
+                        <input id="detection_time" name="detection_time" type="datetime-local" {% if report.detectiontime %} value="{{ report.detectiontime|date:'Y-m-d H:i' }}" {% endif %}>
+                        <input type="button" value="&#128368;" onclick="setDateTime('detection_time');">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Verification Time: </label>
+                    </td>
+                    <td>
+                        <input id="verification_time" name="verification_time" type="datetime-local" {% if report.verifytime %} value="{{ report.verifytime|date:'Y-m-d H:i' }}" {% endif %}>
+                        <input type="button" value="&#128368;" onclick="setDateTime('verification_time');">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Scene Arrival Time: </label>
+                    </td>
+                    <td>
+                        <input id="scene_arrival_time" name="scene_arrival_time" type="datetime-local" {% if report.scenearrtime %} value="{{ report.scenearrtime|date:'Y-m-d H:i' }}" {% endif %}>
+                        <input type="button" value="&#128368;" onclick="setDateTime('scene_arrival_time');">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Lane Blockage Clearance Time: </label>
+                    </td>
+                    <td>
+                        <input id="lane_clearance_time" name="lane_clearance_time" type="datetime-local" {% if report.lanblockcleartime %} value="{{ report.lanblockcleartime|date:'Y-m-d H:i' }}" {% endif %}>
+                        <input type="button" value="&#128368;" onclick="setDateTime('lane_clearance_time');">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Clearance Time: </label>
+                    </td>
+                    <td>
+                        <input id="clearance_time" name="clearance_time" type="datetime-local" {% if report.cleartime %} value="{{ report.cleartime|date:'Y-m-d H:i' }}" {% endif %}>
+                        <input type="button" value="&#128368;" onclick="setDateTime('clearance_time');">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Scene Departure Time: </label>
+                    </td>
+                    <td>
+                        <input id="scene_depart_time" name="scene_depart_time" type="datetime-local" {% if report.scenedeparttime %} value="{{ report.scenedeparttime|date:'Y-m-d H:i' }}" {% endif %}>
+                        <input type="button" value="&#128368;" onclick="setDateTime('scene_depart_time');">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Return To Normal Conditions: </label>
+                    </td>
+                    <td>
+                        <input id="normal_conditions" name="normal_conditions" type="datetime-local" {% if report.retnormtime %} value="{{ report.retnormtime|date:'Y-m-d H:i' }}" {% endif %}>
+                        <input type="button" value="&#128368;" onclick="setDateTime('normal_conditions');">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <br>
+    </div>
+    <div style="clear: both; position: absolute; margin: 280px auto auto 30px;">
+        <div>
+            <label>Event Description</label>
+            <br>
+            <textarea name="event_description" rows="4" cols="50">{% if report.event_description %} {{ report.event_description }} {% endif %}</textarea>
+            <br>
+
+            <label>Operators Response</label>
+            <br>
+            <textarea id="operators_response" name="operators_response" rows="4" cols="50">{% if report.operatorsresponse %} {{ report.operatorsresponse }} {% endif %}</textarea>
+            <br>
+            <input id="response_information" name="response_information" class="btn btn-outline-primary" value="Add Response Information" type="button" onclick="addResponse()">
+            <input name="print_response" class="btn btn-outline-dark" value="Print Response">
+            <br>
+        </div>
+    </div>
+    <br>
+    <div>
+        <div style="float: left; margin: auto auto auto 550px;">
+            <input id="help_activate" name="help_activate" type="checkbox" onclick="openNav(this)"> 
+            <label>Activate Help Log</label>
+            <a href="mailto:nittecmaint@nittec.org?cc=
+            &bcc=
+            &subject=Construction Log # {{report.id}}
+            &body= 
+            
+                    Transportation Management Operations Technician
+                    NITTEC
+                    93 Oak St
+                    Buffalo, NY 14203
+                    (716) 847-2450
+                    Fax (716) 847-2803
+                    www.nittec.org">
+                <input name="email_erie_county" type="button" value="Email Erie County" class="btn btn-outline-primary btn-sm" style="width: 130px;">
+            </a>
+        </div>
+        <div style="float: left; margin-left: 10px;">
+            <label><mark><b>Incident Severity Level</b></mark></label>
+            <br>
+            <table class="border table-xs">
+                <tr>
+                    <td>
+                        <input name="severity_level" type="radio" value="1" {% if report.incseverity %} {% if report.incseverity == 1 %} checked {% endif %} {% endif %}>
+                        <label>Minor</label>
+                    </td>
+                    <td rowspan="3">
+                        <a href="{% static 'incident/severity_level_information.pdf' %}" target="_blank">
+                            <input name="severity_btn" class="btn btn-outline-primary" type="button" value="Severity Information Level" style="width: 120px; white-space: normal; margin-left: 4px;">
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input name="severity_level" type="radio" value="2" {% if report.incseverity %} {% if report.incseverity == 2 %} checked {% endif %} {% endif %}>
+                        <label>Intermediate</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input name="severity_level" type="radio" value="3" {% if report.incseverity %} {% if report.incseverity == 3 %} checked {% endif %} {% endif %}>
+                        <label>Major</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input name="severity_level" type="radio" value="0" {% if report.incseverity %} {% if report.incseverity == 0 %} checked {% endif %} {% endif %}>
+                        <label>none</label>
+                    </td>
+                    <td>
+                        <input name="priority_response" type="checkbox">
+                        <label>Priority Response</label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div style="clear: both; float: left; margin: auto auto auto 450px;">
+        <br>
+        <table class="border table-xs" style="line-height: 1px;">
+            <tr>
+                <td>
+                    <label>Cross Roads ID:  </label>
+                </td>
+                <td>
+                    <input name="cross_roads_id" type="number" style="width: 130px;" {% if report.creventid %} value = "{{ report.creventid }}" {% endif %}>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Activated:</label>
+                </td>
+                <td>
+                    <input name="activated_dms" type="checkbox" {% if report.crdms_act %} checked="true" {% endif %}>
+                    <label>DMS/PVMS</label>
+                </td>
+                <td>
+                    <label>CARS: </label>
+                </td>
+                <td>
+                    <input name="cars_manual" type="checkbox" {% if report.cars_active %} checked="true" {% endif %}>
+                    <label>Manually Entered Into CARS</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <input name="activated_fax_email" type="checkbox" {% if report.crfaxemail_act %} checked="true" {% endif %}>
+                    <label>Fax/Email</label>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <input type="checkbox" name="cars_deleted" {% if report.cars_deactive %} checked="true" {% endif %}>
+                    <label>Manually Deleted Into CARS</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <input name="activated_web" type="checkbox" {% if report.crweb_act %} checked="true" {% endif %}>
+                    <label>Web</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <input name="activated_tcws" type="checkbox" {% if report.tcws %} checked="true" {% endif %}>
+                    <label>TCWS</label>
+                </td>
+                <td>
+                    <label>HICF</label>
+                </td>
+                <td>
+                    <input name="hcif_initial_form" type="checkbox" {% if report.hicfsent %} checked="true" {% endif %}>
+                    <label>Initial Form Sent</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <input name="activated_flashers" type="checkbox" {% if report.skyway %} checked="true" {% endif %}>
+                    <label>Skyway Flashers</label>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <input name="hcif_final_form" type="checkbox" {% if report.hicffinalsent %} checked="true" {% endif %}>
+                    <label>Final Form</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Deactivated:</label>
+                </td>
+                <td>
+                    <input name="deactivated_dms" type="checkbox" {% if report.crdms_deact %} checked="true" {% endif %}>
+                    <label>DMS</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <input name="deactivated_fax_email" type="checkbox" {% if report.crfaxemail_deact %} checked="true" {% endif %}>
+                    <label>Fax/Email</label>
+                </td>
+                <td>
+                    <label>NYAlert:</label>
+                </td>
+                <td>
+                    <input name="issued_nyalert" type="checkbox" {% if report.transalert_act %} checked="true" {% endif %}>
+                    <label>Issued NYAlert</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <input name="deactivated_web" type="checkbox" {% if report.crweb_deact %} checked="true" {% endif %}>
+                    <label>Web</label>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <input name="deleted_nyalert" type="checkbox" {% if report.transalert_deact %} checked="true" {% endif %}>
+                    <label>Deleted NYAlert</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <input name="deactivated_tcws" type="checkbox" {% if report.tcws_deact %} checked="true" {% endif %}>
+                    <label>TCWS</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <input name="deactivated_flashers" type="checkbox" {% if report.skyway_deact %} checked="true" {% endif %}>
+                    <label>Skyway Flashers</label>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="float: left; clear: both; margin: auto auto auto 450px;">
+        <table>
+            <tr>
+                <td>
+                    <label>PVMS List</label>
+                    <br>
+                    <select id="pvms_list" name="pvms_list" size="8" multiple="multiple" style="width: 150px;">
+                    {% if pvmsList %}
+                        {% for pvms in pvmsList %}
+                            {% if pvms in report.pvmsactivelist %}
+
+                            {% else %}
+                                <option> {{ pvms }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    </select>
+                </td>
+                <td>
+                    <input id="pvms_right_btn" type="button" value=">">
+                    <br>
+                    <input id="pvms_left_btn" type="button" value="<">
+                </td>
+                <td>
+                    <label>PVMS Active List</label>
+                    <br>
+                    <select id="pvms_active_list" name="pvms_active_list" multiple="multiple" size="8" style="width: 150px;">
+                    {% if pvmsList %}
+                        {% for pvms in pvmsList %}
+                            {% if pvms in report.pvmsactivelist %}
+                                <option> {{ pvms }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="clear: both; position: absolute; margin: 600px auto auto 30px;">
+        <table>
+            <tr>
+                <td style="width: 170px;">
+                    <label>Detection Method</label>
+                    <br>
+                    <select name="detection_method" style="width: 150px;">
+                        {% for detectionMethod in detectionMethodList %}
+                            <option {% if detectionMethod == report.detectmethod %} selected {% endif %}>{{ detectionMethod }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td style="width: 170px;">
+                    <label>Route/Street</label>
+                    <br>
+                    <select name="route_street" style="width: 150px;">
+                        {% for routeStreet in routeStreeList %}
+                            <option {% if routeStreet == report.route_street %} selected {% endif %}>{{ routeStreet }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 170px;">
+                    <label>Caller Name</label>
+                    <br>
+                    <select id="caller_name_select"  name="caller_name_select" style="width: 150px;" onchange="getCaller()">
+                        <option selected disabled hidden style="display:none" value=""></option>
+                        {% for caller in CallerNamePhoneOrg %}
+                        <option {% if report.caller_name in caller.caller_name %} selected {% endif %}>{{caller.caller_name}}, Ph: {{caller.phone_numbers}}, Org: {{caller.caller_organization}} </option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td style="width: 170px;">
+                    <label>Direction</label>
+                    <br>
+                    <select name="direction" style="width: 150px;">
+                        {% for direction in directionList %}
+                            <option {% if direction == report.direction %} selected {% endif %}>{{ direction }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 170px;">
+                    <label>Caller Name</label>
+                    <br>
+                    <input type="text" name="caller_name"  id="callername" style="width: 150px" {%if report.caller_name%} value={{report.caller_name}} {%endif%}/>
+                </td>
+                <td style="width: 170px;">
+                    <label>Cross Street</label>
+                    <br>
+                    <select name="cross_street" style="width: 150px;">
+                        {% for crossStreet in crossStreetList %}
+                            <option {% if crossStreet == report.cross_street %} selected {% endif %}> {{ crossStreet }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 170px;">
+                    <label>Caller Phone #</label>
+                    <br>
+                    <input type="text" name="caller_phone" id="phone_id" style="width: 150px;" {% if report.caller_phone_field %} value={{report.caller_phone_field}} {% endif %}/>
+                </td>
+                <td style="width: 170px;">
+                    <label>Municipality</label>
+                    <br>
+                    <select name="municipality" style="width: 150px;">
+                        {% for municipality in municipalityList %}
+                            <option {% if municipality == report.municipality %} selected {% endif %}>{{ municipality }} </option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 170px;">
+                    <label>Caller Organization</label>
+                    <br>
+                    <input type="text" name="caller_organization" style="width: 150px;" id="caller_org" {%if report.caller_organization%} value={{report.caller_organization}} {%endif%}/>
+                </td>
+                <td>
+                    <label>Owning Agency</label>
+                    <br>
+                    <select name="owning_agency" style="width: 150px;">
+                        {% for owningAgency in owningAgencyList %}
+                            <option {% if owningAgency == report.owning_agency %} selected {% endif %}>{{ owningAgency }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <label>DMS List</label>
+                    <br>
+                    <select id="dms_list" name="dms_list" multiple="multiple" size="8" style="width: 150px;">
+                        {% if dmsList %}
+                            {% for dms in dmsList %}
+                                {% if dms in report.dmsactivelist %}
+            
+                                {% else %}
+                                    <option> {{ dms }} </option>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                </td>
+                <td>
+                    <input id="dms_right_btn" type="button" value=">">
+                    <br>
+                    <input id="dms_left_btn" type="button" value="<">
+                </td>
+                <td>
+                    <label>DMS Active List</label>
+                    <br>
+                    <select id="dms_active_list" name="dms_active_list" multiple="multiple" size="8" style="width: 150px;">
+                        {% for dms in dmsList %}
+                            {% if dms in report.dmsactivelist %}
+                                <option>{{ dms }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- Activity help log -->
+    <div id="help_log" class="sidenav" style="color: white;">
+        <div style="margin: auto auto auto 5px">
+            <label><mark><b>Help Activity Log</b></mark></label>
+            <br>
+            <table>
+                <tr>
+                    <td>
+                        <label style="color: white;">Help Team ID*</label>
+                        <br>
+                        <input name="help_team_id" type="number" style="width: 150px;" {% if report.helplogid %} value="{{ report.helplogid }}" {% endif %}>
+                    </td>
+                    <td>
+                        <label style="color: white;">Referring Log*</label>
+                        <br>
+                        <input name="referring_log" type="number" style="width: 150px;" {% if report.id %} value="{{ report.id }}" {% endif %}>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label style="color: white;">Date*</label>
+                        <br>
+                        <input id="help_date" name="help_date" type="date" style="width: 150px;" {% if help.inputdate %} value="{{ help.inputdate|date:"Y-m-d" }}" {% endif %}>
+                    </td>
+                    <td>
+                        <label style="color: white;">Referring Route</label>
+                        <br>
+                        <input id="referring_route" name="referring_route" type="text" style="width: 150px;" {% if help.referringroute %} value="{{ help.referringroute }}" {% endif %}>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label style="color: white;">Time*</label>
+                        <br>
+                        <input id="help_time" name="help_time" type="text" {% if help.inputtime %} value="{{ help.inputtime|time:"H:i" }}" {% endif %}>
+                        <input type="button" value="&#128368;" onclick="setTime('help_time');">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="lanes_blocked_num" name="lanes_blocked_number" type="number" {% if help.num_lanes_blocked %} value="{{ help.num_lanes_blocked }}" {% endif %}>
+                        <label style="color: white;"># of Lanes Blocked</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="first_on_scene" name="first_on_scene" type="checkbox" {% if help.firstonscene %} checked {% endif %}>
+                        <label style="color: white;">First on Scene</label>
+                    </td>
+                </tr>
+            </table>
+            <label>Operator</label>
+            <br>
+            <select name="help_operator" style="width: 150px; color: black;">
+                {% for operator in operatorList %}
+                    <option {% if operator == help.operators %} selected {% endif %}>{{ operator }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <label>How Notified</label>
+            <br>
+            <select name="help_how_notified" style="width: 150px; color: black;">
+                {% if helpHowNotifyList %}
+                    {% for howNotify in helpHowNotifyList %}
+                        <option style="color: whblackite;" {% if howNotified == help.hownotified %} selected {% endif %}>{{ howNotify }}</option>
+                    {% endfor %}
+                {% endif %}
+            </select>
+            <br>
+            <label>Assist Type</label>
+            <br>
+            <select name="help_assist_type" style="width: 150px; color: black;">
+                {% if helpAssistList %}
+                    {% for helpAssist in helpAssistList %}
+                        <option style="color: black;" {% if helpAssist == help.assisttype %} selected {% endif %}>{{ helpAssist }}</option>
+                    {% endfor %}
+                {% endif %}
+            </select>
+            <br>
+            <label>Action Taken</label>
+            <br>
+            <select name="help_action_taken" style="width: 150px; color: black;">
+                {% if helpActionList %}
+                    {% for helpAction in helpActionList %}
+                        <option style="color: black;" {% if helpAction == help.actiontaken %} selected {% endif %}>{{ helpAction }}</option>
+                    {% endfor %}
+                {% endif %}
+            </select>
+            <br>
+            <div style="float: left;" class="border">
+                <label>Referring Log Type</label>
+                <br>
+                <input name="referring_log_type" type="radio" checked>
+                <label>Incident</label>
+                <br>
+                <input name="referring_log_type" type="radio">
+                <label>Construction</label>
+                <br>
+                <input name="referring_log_type" type="radio">
+                <label>Debris</label>
+            </div>
+            <div style="float: left;">
+                <input name="delete_help_record" type="button" class="btn btn-danger" value="Delete Help Record" style="width: 120px; white-space: normal; margin: auto auto auto 40px" onclick="deleteHelp();">
+            </div>
+            <div style="clear: both;">
+                <table class="border">
+                    <tr>
+                        <label>Incident Start Time</label>
+                        <br>
+                        <input id="incident_start_time" name="incident_start_time" type="text" {% if help.incidentstarttime %} value="{{ help.incidentstarttime|time:"H:i" }}" {% endif %}>
+                        <input type="button" value="&#128368;" onclick="setTime('incident_start_time');">
+                        <br>
+                    </tr>
+                    <tr>
+                        <label>Dispatch Time</label>
+                        <br>
+                        <input id="dispatch_time" name="dispatch_time" type="text" {% if help.dispatchtime %} value="{{ help.dispatchtime|time:"H:i" }}" {% endif %}>
+                        <input type="button" value="&#128368;" onclick="setTime('dispatch_time');">
+                        <br>
+                    </tr>
+                </table>
+                <table class="border">
+                    <tr>
+                        <label>Arrival Time</label>
+                        <br>
+                        <input id="arrival_time" name="arrival_time" type="text" {% if help.arrivaltime %} value="{{ help.arrivaltime|time:"H:i" }}" {% endif %}>
+                        <input type="button" value="&#128368;" onclick="setTime('arrival_time');">
+                        <br>
+                    </tr>
+                    <tr>
+                        <label>Clear Lane Time</label>
+                        <br>
+                        <input id="clear_lane_time" name="clear_lane_time"  type="text" {% if help.clearlanetime %} value="{{ help.clearlanetime|time:"H:i" }}" {% endif %}>
+                        <input type="button" value="&#128368;" onclick="setTime('clear_lane_time');">
+                        <br>
+                    </tr>
+                </table>
+                <table class="border">
+                    <tr>
+                        <label>Scene Departure Time</label>
+                        <br>
+                        <input id="scene_departure_time" name="scene_departure_time" type="text" {% if help.scenedeparturetime %} value="{{ help.scenedeparturetime|time:"H:i" }}" {% endif %}>
+                        <input type="button" value="&#128368;" onclick="setTime('scene_departure_time');">
+                        <br>
+                    </tr>
+                    <tr>
+                        <label>Number of Vehicals Moved</label>
+                        <br>
+                        <input name="num_vehicals_moved" type="number" {% if help.numvehiclesmoved %} value="{{ help.numvehiclesmoved }}" {% endif %}>
+                        <br>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        function addResponse(){
+            var operator = document.getElementById("operator").value;
+            var start_date=  returnDateNow();
+            var start_time= getTime();
+            var text = document.getElementById("operators_response").value;
+            if(text == "") {
+                document.getElementById("operators_response").value = start_date + ' ' + start_time + ' ' + operator;
+            } else {
+                document.getElementById("operators_response").value = text+'\n ----------------------------------------- \n' + start_date + ' ' + start_time + ' ' + operator;
+            }
+        }
+    
+        function openNav(checkbox) {
+            if(checkbox.checked == true) {
+                document.getElementById("help_log").style.width = "350px";
+                document.getElementById("help_date").required = true;
+                document.getElementById("help_time").required = true;
+            } else {
+                document.getElementById("help_log").style.width = "0px";
+                document.getElementById("help_date").required = false;
+                document.getElementById("help_time").required = false;
+            }
+        }
+
+        function deleteHelp() {
+            if(document.getElementById("help_activate").checked == true){
+                document.getElementById("help_log").style.width = "0px";
+                document.getElementById("help_activate").checked = false;
+                document.getElementById("help_activate").disabled = false;
+                document.getElementById("help_date").required = false;
+                document.getElementById("help_time").required = false;
+            }
+        }
+
+        function selectAll() {
+            dms_select = document.getElementById("dms_active_list");
+            for (var dms = 0; dms < dms_select.length; dms++) {
+                dms_select.options[dms].selected = true;
+            }
+
+            pvms_select = document.getElementById("pvms_active_list");
+            for (var pvms = 0; pvms < pvms_select.length; pvms++) {
+                pvms_select.options[pvms].selected = true;
+            }
+        }
+
+        function setTime(time_id) {
+            var now = new Date();
+            var hour = now.getHours();
+            var minute = now.getMinutes();
+
+            var time = (hour < 10 ? "0" + hour.toString() : hour) + ":" +
+            (minute < 10 ? "0" + minute.toString() : minute);
+
+            var time_input = document.getElementById(time_id);
+            time_input.value = time;
+        }
+
+        if (document.getElementById('time').value == "") {
+            setTime("time");
+        }
+
+        if (document.getElementById('help_time').value == "") {
+            setTime("help_time");
+        }
+
+        if (document.getElementById('date').value == "") {
+            document.getElementById('date').value = returnDateNow();
+        }
+
+        if (document.getElementById('help_date').value == "") {
+            document.getElementById('help_date').value = returnDateNow();
+        }
+
+        function setDateTime(element_id) {
+            var now = new Date();
+            var year = now.getFullYear();
+            var month = now.getMonth() + 1;
+            var day = now.getDate();
+            var hour = now.getHours();
+            var minute = now.getMinutes();
+
+            var localDatetime = year + "-" +
+            (month < 10 ? "0" + month.toString() : month) + "-" +
+            (day < 10 ? "0" + day.toString() : day) + " " +
+            (hour < 10 ? "0" + hour.toString() : hour) + ":" +
+            (minute < 10 ? "0" + minute.toString() : minute);
+
+            // var localDatetime = (month < 10 ? "0" + month.toString() : month) + "-" +
+            // (day < 10 ? "0" + day.toString() : day) + "-" +
+            // year + " " +
+            // (hour < 10 ? "0" + hour.toString() : hour) + ":" +
+            // (minute < 10 ? "0" + minute.toString() : minute) +
+            // utcString.substring(16,19);
+
+            date_input = document.getElementById(element_id);
+            date_input.value = localDatetime;
+        }
+
+        $('#dms_right_btn').click(function(e) {
+            var selectedOpts = $('#dms_list option:selected');
+            if (selectedOpts.length == 0) {
+                alert("Select an item from the DMS List to move.");
+                e.preventDefault();
+            }
+
+            for (opt of selectedOpts) {
+                var active_list = document.getElementById('dms_active_list');
+                var option = document.createElement("option");
+                option.text = opt.innerText;
+                active_list.add(option);
+            }
+            $(selectedOpts).remove();
+            e.preventDefault();
+        });
+
+        $('#dms_left_btn').click(function(e) {
+            var selectedOpts = $('#dms_active_list option:selected');
+            if (selectedOpts.length == 0) {
+                alert("Select an item from the DMS Active list to move.");
+                e.preventDefault();
+            }
+
+            for (opt of selectedOpts) {
+                var active_list = document.getElementById('dms_list');
+                var option = document.createElement("option");
+                option.text = opt.innerText;
+                active_list.add(option);
+            }
+            $(selectedOpts).remove();
+            e.preventDefault();
+        });
+
+        $('#pvms_right_btn').click(function(e) {
+            var selectedOpts = $('#pvms_list option:selected');
+            if (selectedOpts.length == 0) {
+                alert("Select an item from the PVMS List to move.");
+                e.preventDefault();
+            }
+
+            for (opt of selectedOpts) {
+                var active_list = document.getElementById('pvms_active_list');
+                var option = document.createElement("option");
+                option.text = opt.innerText;
+                active_list.add(option);
+            }
+            $(selectedOpts).remove();
+            e.preventDefault();
+        });
+
+        $('#pvms_left_btn').click(function(e) {
+            var selectedOpts = $('#pvms_active_list option:selected');
+            if (selectedOpts.length == 0) {
+                alert("Select an item from the PVMS Active list to move.");
+                e.preventDefault();
+            }
+
+            for (opt of selectedOpts) {
+                var active_list = document.getElementById('dms_list');
+                var option = document.createElement("option");
+                option.text = opt.innerText;
+                active_list.add(option);
+            }
+            $(selectedOpts).remove();
+            e.preventDefault();
+        });
+    </script>
+</form>
+<script>
+    $(function() {
+      $('#incident_form').areYouSure(
+        {
+          message: 'It looks like you have been editing something. '
+                 + 'If you leave before saving, your changes will be lost.'
+        }
+      );
+    });
+</script>
+{% if unlockPage == True %}
+    <script>
+        $('input').attr('disabled', false);
+        document.getElementById("update_report").disabled = true;
+        document.getElementById("add_report").disabled = true;
+        document.getElementById("print_report").disabled = true;
+        document.getElementById("find_report").disabled = true;
+        document.getElementById("fast_left").disabled = true;
+        document.getElementById("left").disabled = true;
+        document.getElementById("right").disabled = true;
+        document.getElementById("fast_right").disabled = true;
+        document.getElementById("delete_report").disabled = true;
+    </script>
+{% else %}
+    <script>
+        $('input').attr('disabled', true);
+        $('.unlock').attr('disabled', false);
+        $('input[name="csrfmiddlewaretoken"]').attr('disabled', false);
+        document.getElementById("save_report").disabled = true;
+    </script>
+{% endif %}
+{% if displayHelpLog %}
+    <script>
+        //document.getElementById("help_activate").disabled = false;
+        document.getElementById("help_activate").checked = true;
+        document.getElementById("help_log").style.width = "350px";
+    </script>
+{% endif %}
+{% endblock %}
